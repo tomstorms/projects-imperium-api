@@ -37,6 +37,14 @@ router.post('/', (req, res, next) => {
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         description: req.body.description,
+
+
+        // name: { type: String, required: true },
+        // description: String,
+        // layout: String,
+        // wheelchair_access: Boolean,
+        // room_category: { type: mongoose.Schema.Types.ObjectId, ref: 'RoomCategory' },
+        // web_link: String,
     });
     room.save().then(result => {
         console.log(result);

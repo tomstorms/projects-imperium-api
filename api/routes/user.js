@@ -99,8 +99,8 @@ router.post('/login', hasUserRole('public'), (req,res) => {
     .exec()
     .then(user => {
         if (user.length < 1) {
-            return res.status(401).json({
-                message: 'Auth failed'
+            return res.status(200).json({
+                message: 'User does not exist with that email address.'
             });
         }
 

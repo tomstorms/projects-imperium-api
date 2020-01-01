@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const roomCategprySchema = mongoose.Schema({
+const roomCategorySchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: { type: String, required: true },
-    description: String,
+    price: { type: Number, required: true, default: 0.00 },
 });
 
-module.exports = mongoose.model('RoomCategory', roomCategprySchema);
+module.exports = mongoose.model('Room_Category', roomCategorySchema);

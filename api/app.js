@@ -41,13 +41,11 @@ app.use((req, res, next) => {
 const roomRoutes = require('./routes/room');
 const roomCategoryRoutes = require('./routes/room-category');
 const userRoutes = require('./routes/user');
-const userRolesRoutes = require('./routes/user-role');
 
 // Activate routes
 app.use('/rooms', roomRoutes);
 app.use('/room-category', roomCategoryRoutes);
 app.use('/users', userRoutes);
-// app.use('/users/roles', userRolesRoutes);
 
 // Catch all
 app.use((req, res, next) => {

@@ -93,7 +93,6 @@ module.exports = {
     },
     checkToken: (req, res, next) => {
         try {
-            console.log(req.headers);
             // Verify JWT Token
             const token = req.headers.authorization.split(" ")[1];
             const decoded = jwt.verify(token, process.env.JWT_KEY);
@@ -107,8 +106,6 @@ module.exports = {
     },
     hasUserRole: (role, permissionType='exact') => {
         return function(req, res, next) {
-            console.log(role);
-            console.log(permissionType);
             return module.exports.checkAuth(req, res, next, role, permissionType);
         }
     }
