@@ -90,6 +90,7 @@ router.patch('/:roomCategoryId', hasUserRole('authenticated'), (req,res) => {
     .then(result => {
         res.status(200).json({
             message: 'Room Category updated',
+            updatedRoomCategory: updateOps,
         });
     })
     .catch(err => {
