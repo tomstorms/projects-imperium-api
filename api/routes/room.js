@@ -54,10 +54,6 @@ router.post('/', (req, res, next) => {
                 _id: result._id,
                 name: result.name,
                 description: result.description,
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3000/rooms/' + result.id,
-                }
             },
         });
     })
@@ -79,10 +75,6 @@ router.get('/:roomId', (req, res, next) => {
         if (doc) {
             res.status(200).json({
                 room: doc,
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3000/rooms/' + result.id,
-                }
             });
         } else {
             res.status(404).json({message: 'Room not found'});
@@ -107,10 +99,6 @@ router.patch('/:roomId', (req, res, next) => {
             console.log(result);
             res.status(200).json({
                 message: 'Room updated',    
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3000/rooms/' + id,
-                }
             });
         })
         .catch(err => {
@@ -127,11 +115,7 @@ router.delete('/:roomId', (req, res, next) => {
         .then(result => {
             console.log(result);
             res.status(200).json({
-                message: 'Room deleted',    
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3000/rooms/' + id,
-                }
+                message: 'Room deleted',
             });
         })
         .catch(err => {
