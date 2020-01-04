@@ -13,6 +13,7 @@ query {
         userId
         token
         tokenExpiration
+        userRole
     }
 }
 

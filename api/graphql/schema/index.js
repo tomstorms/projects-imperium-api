@@ -45,13 +45,14 @@ module.exports = buildSchema(`
     input UserInput {
         email: String!
         password: String!
-        user_role: String!
+        user_role: String! = "authenticated"
     }
 
     type AuthData {
         userId: ID!
         token: String!
         tokenExpiration: Int!
+        userRole: String!
     }
 
     type RootQuery {

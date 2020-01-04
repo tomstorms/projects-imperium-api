@@ -5,21 +5,18 @@ const User = require('../../../models/user');
 
 module.exports = {
     createUser: async (args, req) => {
-        if (!req.isAuth) {
-            throw new Error('Unauthenticated');
-        }
-
         try {
             const existingUser = await User.findOne({email: args.userInput.email})
             if (existingUser) {
                 throw new Error('User already exists');
             }
             const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
+            const userRole = args.userInput.user_role | 'authenticated';
 
             const user = new User({
                 email: args.userInput.email,
                 password: hashedPassword,
-                user_role: args.userInput.user_role
+                user_role: userRole
             });
             
             const result = await user.save();
