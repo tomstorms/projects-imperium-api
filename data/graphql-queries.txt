@@ -1,0 +1,207 @@
+# Create User
+mutation {
+    createUser(userInput:{email:"admin@imperium.com", password:"test123", user_role:"superadmin"}) {
+        email
+        password
+        user_role
+    }
+}
+
+# Login User to get token
+query {
+    login(email:"admin@imperium.com", password:"test123") {
+        userId
+        token
+        tokenExpiration
+    }
+}
+
+# Create Establishment
+mutation {
+    createEstablishment(establishmentInput:{name: "Coco Grove Beach Resort"}) {
+        _id
+        name
+    }
+}
+
+mutation {
+    createEstablishment(establishmentInput:{name: "Apo Island Beach Resort"}) {
+        _id
+        name
+    }
+}
+
+mutation {
+    createEstablishment(establishmentInput:{name: "Coco Grande Hotel"}) {
+        _id
+        name
+    }
+}
+
+# Get Establishments
+query {
+    establishments {
+        _id
+        name
+    }
+}
+
+# Get Establishment with Room Category
+
+query {
+    establishments {
+        _id
+        name
+        room_category {
+            _id
+            name
+            price
+        }
+    }
+}
+
+# Create Room Category
+mutation {
+    createRoomCategory(roomCategoryInput:{name: "Standard", price: 4200, establishment_id: "5e102ff9c690923421ea4dd4"}) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+mutation {
+    createRoomCategory(roomCategoryInput:{name: "Deluxe", price: 5600, establishment_id: "5e102ff9c690923421ea4dd4"}) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+mutation {
+    createRoomCategory(roomCategoryInput:{name: "Superior Cottage", price: 5800, establishment_id: "5e102ff9c690923421ea4dd4"}) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+mutation {
+    createRoomCategory(roomCategoryInput:{name: "Executive Room", price: 7200, establishment_id: "5e102ff9c690923421ea4dd4"}) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+mutation {
+    createRoomCategory(roomCategoryInput:{name: "Villa Suite Room", price: 8500, establishment_id: "5e102ff9c690923421ea4dd4"}) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+mutation {
+    createRoomCategory(roomCategoryInput:{name: "Villa Premier Room", price: 9800, establishment_id: "5e102ff9c690923421ea4dd4"}) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+mutation {
+    createRoomCategory(roomCategoryInput:{name: "Casa Coco Penthouse", price: 21000, establishment_id: "5e102ff9c690923421ea4dd4"}) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+
+# Get Room Categories
+query {
+    room_category {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
+}
+
+# Create Room
+mutation {
+    createRoom(roomInput:{name:"Frangipani 1", description: "This cozy room is located near the garden bar and games room, massage area and pool", room_category_id:"5e103011c690923421ea4dd7"}) {
+        name
+        description
+        room_category {
+            _id
+            name
+            price
+            establishment {
+                _id
+                name
+            }
+        }
+    }
+}
+
+mutation {
+    createRoom(roomInput:{name:"Sea Breeze", description: "Sea Breeze has two rooms under the same roof (Sea Breeze 1 and Sea Breeze 2). Both are identical rooms located on the hill side of the resort.", room_category_id:"5e103011c690923421ea4dd7"}) {
+        name
+        description
+        room_category {
+            _id
+            name
+            price
+        }
+    }
+}
+
+
+# Get Rooms
+query {
+    rooms {
+        name
+        description
+        room_category {
+            _id
+            name
+            price
+            establishment {
+                _id
+                name
+            }
+        }
+    }
+}

@@ -1,66 +1,46 @@
 const express = require('express');
-const app = express();
-const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const graphQlHttp = require('express-graphql');
 const mongoose = require('mongoose');
 
-// Enable middleware for logging
-app.use(morgan('dev'));
+const graphQlSchema = require('./graphql/schema/index');
+const graphQlResolvers = require('./graphql/resolvers/index');
+const isAuth = require('./middleware/is-auth');
 
-// Read body
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express();
+
 app.use(bodyParser.json());
 
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://' + process.env.MONGO_USERNAME + ':' + process.env.MONGO_PASSWORD + '@cluster0-zikku.mongodb.net/' + process.env.MONGO_COLLECTION + '?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-mongoose.Promise = global.Promise;
-
-// CORS protection
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-requested-With, Content-Type, Accept, Authorization"
-    );
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     if (req.method === 'OPTIONS') {
-        res.header(
-            "Access-Control-Allow-Methods",
-            "PUT, POST, PATCH, DELETE"
-        );
-        return res.status(200).json({});
+        return res.sendStatus(200);
     }
-
     next();
-})
-
-// Available routes
-const roomRoutes = require('./routes/room');
-const roomCategoryRoutes = require('./routes/room-category');
-const userRoutes = require('./routes/user');
-
-// Activate routes
-app.use('/rooms', roomRoutes);
-app.use('/room-category', roomCategoryRoutes);
-app.use('/users', userRoutes);
-
-// Catch all
-app.use((req, res, next) => {
-    const error = new Error('Not found');
-    error.status = 404;
-    next(error);
 });
 
-app.use((error, req, res, next) => {
-    res.status(error.status || 500);
-    res.json({
-        error: {
-            message: error.message
-        }
-    });
-});
+app.use(isAuth);
 
-module.exports = app;
+app.use('/graphql', graphQlHttp({
+    schema: graphQlSchema,
+    rootValue: graphQlResolvers,
+    graphiql: true
+}));
+
+// app.get('/', (req, res, next) => {
+//     res.send('Hello World!');
+// });
+
+mongoose.connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-zikku.mongodb.net/${process.env.MONGO_COLLECTION}?retryWrites=true&w=majority`, 
+    { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true
+    }
+).then(() => {
+    app.listen(8000);
+}).catch(err => {
+    console.log(err);
+});

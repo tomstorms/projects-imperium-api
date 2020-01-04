@@ -1,7 +1,7 @@
 {
     "env": {
         "MONGO_COLLECTION": "imperium",
-        "MONGO_USER": "imperium_usr",
+        "MONGO_USERNAME": "imperium_usr",
         "MONGO_PASSWORD": "1RgI5jFkGl7PbwII",
         "JWT_KEY": "b^xiz4v4%^peW%cGko6CtCaLJ"
     }
