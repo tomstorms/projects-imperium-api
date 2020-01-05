@@ -65,12 +65,20 @@ query {
 
 # Update Establishment
 mutation {
-    updateEstablishment(establishmentInput:{_id: "5e102ff9c690923421ea4dd4", name: "Coco Grove Beach Resort"})
+    updateRoomCategory(roomCategoryInput:{_id: "5e11af37d07871984dd1de55", name: "Coco Grove Beach Resort", price: 12000, establishment_id: "5e103002c690923421ea4dd5" }) {
+        _id
+        name
+        price
+        establishment {
+            _id
+            name
+        }
+    }
 }
 
 # Delete Establishment
 mutation {
-    deleteEstablishment(establishmentInput:{_id: "5e117e76ef41438e2950be90"})
+    deleteRoomCategory(roomCategoryInput:{_id: "5e11af37d07871984dd1de55"})
 }
 
 #======================================================================
@@ -172,6 +180,16 @@ query {
             name
         }
     }
+}
+
+# Update Room Category
+mutation {
+    updateRoomCategory(roomCategoryInput:{_id: "5e11af37d07871984dd1de55", name: "Coco Grove Beach Resort"})
+}
+
+# Delete Room Category
+mutation {
+    deleteRoomCategory(roomCategoryInput:{_id: "5e117e76ef41438e2950be90"})
 }
 
 

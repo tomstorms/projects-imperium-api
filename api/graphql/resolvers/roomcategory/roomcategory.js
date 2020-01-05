@@ -49,20 +49,29 @@ module.exports = {
         }
 
         try {
+            console.log(args);
+
+            const establishmentObj = await Establishment.findOne({ _id: args.roomCategoryInput.establishment_id });
+            if (!establishmentObj) {
+                throw new Error('Invalid Establishment');
+            }
+
             const result = await RoomCategory.findByIdAndUpdate(
                 args.roomCategoryInput._id,
                 { 
                     name: args.roomCategoryInput.name,
                     price: +args.roomCategoryInput.price,
                     establishment: establishmentObj._id,
-                }
+                },
+                { new: true }, // return latest results
             );
 
             if (!result) {
                 throw new Error('Failed to update Room Category');
             }
 
-            return true;
+            const updated = transformRoomCategory(result);
+            return updated;
         }
         catch(err) {
             throw err;
