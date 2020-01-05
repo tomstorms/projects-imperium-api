@@ -37,7 +37,8 @@ mongoose.connect(
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-zikku.mongodb.net/${process.env.MONGO_COLLECTION}?retryWrites=true&w=majority`, 
     { 
         useNewUrlParser: true, 
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false,
     }
 ).then(() => {
     app.listen(8000);

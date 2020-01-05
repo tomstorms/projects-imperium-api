@@ -17,6 +17,8 @@ query {
     }
 }
 
+#======================================================================
+
 # Create Establishment
 mutation {
     createEstablishment(establishmentInput:{name: "Coco Grove Beach Resort"}) {
@@ -60,6 +62,18 @@ query {
         }
     }
 }
+
+# Update Establishment
+mutation {
+    updateEstablishment(establishmentInput:{_id: "5e102ff9c690923421ea4dd4", name: "Coco Grove Beach Resort"})
+}
+
+# Delete Establishment
+mutation {
+    deleteEstablishment(establishmentInput:{_id: "5e117e76ef41438e2950be90"})
+}
+
+#======================================================================
 
 # Create Room Category
 mutation {

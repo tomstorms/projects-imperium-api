@@ -35,4 +35,45 @@ module.exports = {
             throw err;
         }
     },
+    updateEstablishment: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated');
+        }
+
+        try {
+            const result = await Establishment.findByIdAndUpdate(
+                args.establishmentInput._id,
+                { 
+                    name: args.establishmentInput.name,
+                }
+            );
+
+            if (!result) {
+                throw new Error('Invalid Establishment');
+            }
+
+            return true;
+        }
+        catch(err) {
+            throw err;
+        }
+    },
+    deleteEstablishment: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated');
+        }
+
+        try {
+            const result = await Establishment.findByIdAndDelete(args.establishmentInput._id);
+
+            if (!result) {
+                throw new Error('Invalid Establishment');
+            }
+
+            return true;
+        }
+        catch(err) {
+            throw err;
+        }
+    }
 }

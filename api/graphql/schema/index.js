@@ -8,8 +8,15 @@ module.exports = buildSchema(`
         name: String!
         room_category: [RoomCategory]
     }
-    input EstablishmentInput {
+    input EstablishmentInputCreate {
         name: String!
+    }
+    input EstablishmentInputUpdate {
+        _id: ID!
+        name: String!
+    }
+    input EstablishmentInputDelete {
+        _id: ID!
     }
 
     type RoomCategory {
@@ -65,7 +72,12 @@ module.exports = buildSchema(`
     }
 
     type RootMutation {
-        createEstablishment(establishmentInput: EstablishmentInput!): Establishment
+        createEstablishment(establishmentInput: EstablishmentInputCreate!): Establishment
+        updateEstablishment(establishmentInput: EstablishmentInputUpdate!): Boolean
+        deleteEstablishment(establishmentInput: EstablishmentInputDelete!): Boolean
+
+
+
         createRoomCategory(roomCategoryInput: RoomCategoryInput!): RoomCategory
         createRoom(roomInput: RoomInput!): Room
         createUser(userInput: UserInput!): User
