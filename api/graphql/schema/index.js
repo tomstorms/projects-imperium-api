@@ -94,15 +94,15 @@ module.exports = buildSchema(`
 
     type RootMutation {
         createEstablishment(establishmentInput: EstablishmentInputCreate!): Establishment
-        updateEstablishment(establishmentInput: EstablishmentInputUpdate!): Boolean
+        updateEstablishment(establishmentInput: EstablishmentInputUpdate!): Establishment
         deleteEstablishment(establishmentInput: EstablishmentInputDelete!): Boolean
 
         createRoomCategory(roomCategoryInput: RoomCategoryInput!): RoomCategory
-        updateRoomCategory(roomCategoryInput: RoomCategoryInputUpdate!): Boolean
+        updateRoomCategory(roomCategoryInput: RoomCategoryInputUpdate!): RoomCategory
         deleteRoomCategory(roomCategoryInput: RoomCategoryInputDelete!): Boolean
 
         createRoom(roomInput: RoomInput!): Room
-        updateRoom(roomInput: RoomInputUpdate!): Boolean
+        updateRoom(roomInput: RoomInputUpdate!): Room
         deleteRoom(roomInput: RoomInputDelete!): Boolean
 
         createUser(userInput: UserInput!): User

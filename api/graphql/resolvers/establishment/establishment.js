@@ -45,14 +45,16 @@ module.exports = {
                 args.establishmentInput._id,
                 { 
                     name: args.establishmentInput.name,
-                }
+                },
+                { new: true }, // return latest results
             );
 
             if (!result) {
                 throw new Error('Failed to update Establishment');
             }
-
-            return true;
+            
+            const updated = transformEstablishment(result);
+            return updated;
         }
         catch(err) {
             throw err;
