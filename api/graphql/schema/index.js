@@ -41,6 +41,7 @@ module.exports = buildSchema(`
         email: String!
         password: String
         user_role: String!
+        user_profile: String
     }
     input UserInput {
         email: String!
@@ -53,6 +54,7 @@ module.exports = buildSchema(`
         token: String!
         tokenExpiration: Int!
         userRole: String!
+        userProfile: String
     }
 
     type RootQuery {

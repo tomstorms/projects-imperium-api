@@ -16,7 +16,8 @@ module.exports = {
             const user = new User({
                 email: args.userInput.email,
                 password: hashedPassword,
-                user_role: userRole
+                user_role: userRole,
+                user_profile: ''
             });
             
             const result = await user.save();

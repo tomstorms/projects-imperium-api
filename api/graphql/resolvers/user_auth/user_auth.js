@@ -6,6 +6,8 @@ const User = require('../../../models/user');
 module.exports = {
     login: async ({email, password}) => {
         try {
+            const defaultTokenExpiry = 12; // hours
+
             const user = await User.findOne({email: email});
             if (!user) {
                 throw new Error('User does not exist');
@@ -17,10 +19,16 @@ module.exports = {
             }
 
             const token = jwt.sign({ userId: user.id, userRole: user.user_role, email: user.email }, process.env.JWT_KEY, {
-                expiresIn: '12h'
+                expiresIn: defaultTokenExpiry+'h'
             });
 
-            return { userId: user.id, userRole: user.user_role, token: token, tokenExpiration: 1 };
+            return { 
+                token: token, 
+                tokenExpiration: defaultTokenExpiry, 
+                userId: user.id, 
+                userRole: user.user_role, 
+                userProfile: user.user_profile,
+            };
         }
         catch(err) {
             throw err;
