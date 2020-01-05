@@ -49,7 +49,7 @@ module.exports = {
             );
 
             if (!result) {
-                throw new Error('Invalid Establishment');
+                throw new Error('Failed to update Establishment');
             }
 
             return true;
@@ -67,7 +67,7 @@ module.exports = {
             const result = await Establishment.findByIdAndDelete(args.establishmentInput._id);
 
             if (!result) {
-                throw new Error('Invalid Establishment');
+                throw new Error('Failed to delete Establishment');
             }
 
             return true;

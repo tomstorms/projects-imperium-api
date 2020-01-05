@@ -19,6 +19,7 @@ module.exports = buildSchema(`
         _id: ID!
     }
 
+
     type RoomCategory {
         _id: ID!
         name: String!
@@ -30,6 +31,16 @@ module.exports = buildSchema(`
         price: Float!
         establishment_id: String!
     }
+    input RoomCategoryInputUpdate {
+        _id: ID!
+        name: String
+        price: Float
+        establishment_id: String
+    }
+    input RoomCategoryInputDelete {
+        _id: ID!
+    }
+
 
     type Room {
         _id: ID!
@@ -42,6 +53,16 @@ module.exports = buildSchema(`
         description: String
         room_category_id: String!
     }
+    input RoomInputUpdate {
+        _id: ID!
+        name: String!
+        description: String
+        room_category_id: String!
+    }
+    input RoomInputDelete {
+        _id: ID!
+    }
+
 
     type User {
         _id: ID!
@@ -76,10 +97,14 @@ module.exports = buildSchema(`
         updateEstablishment(establishmentInput: EstablishmentInputUpdate!): Boolean
         deleteEstablishment(establishmentInput: EstablishmentInputDelete!): Boolean
 
-
-
         createRoomCategory(roomCategoryInput: RoomCategoryInput!): RoomCategory
+        updateRoomCategory(roomCategoryInput: RoomCategoryInputUpdate!): Boolean
+        deleteRoomCategory(roomCategoryInput: RoomCategoryInputDelete!): Boolean
+
         createRoom(roomInput: RoomInput!): Room
+        updateRoom(roomInput: RoomInputUpdate!): Boolean
+        deleteRoom(roomInput: RoomInputDelete!): Boolean
+
         createUser(userInput: UserInput!): User
     }
 

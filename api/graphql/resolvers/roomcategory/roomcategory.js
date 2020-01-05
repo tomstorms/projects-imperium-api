@@ -43,4 +43,47 @@ module.exports = {
             throw err;
         }
     },
+    updateRoomCategory: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated');
+        }
+
+        try {
+            const result = await RoomCategory.findByIdAndUpdate(
+                args.roomCategoryInput._id,
+                { 
+                    name: args.roomCategoryInput.name,
+                    price: +args.roomCategoryInput.price,
+                    establishment: establishmentObj._id,
+                }
+            );
+
+            if (!result) {
+                throw new Error('Failed to update Room Category');
+            }
+
+            return true;
+        }
+        catch(err) {
+            throw err;
+        }
+    },
+    deleteRoomCategory: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated');
+        }
+
+        try {
+            const result = await RoomCategory.findByIdAndDelete(args.roomCategoryInput._id);
+
+            if (!result) {
+                throw new Error('Failed to delete Room Category');
+            }
+
+            return true;
+        }
+        catch(err) {
+            throw err;
+        }
+    }
 }
