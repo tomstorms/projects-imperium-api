@@ -229,6 +229,7 @@ mutation {
 # Get Rooms
 query {
     rooms {
+        _id
         name
         description
         room_category {
@@ -241,4 +242,28 @@ query {
             }
         }
     }
+}
+
+# Update Room
+
+mutation {
+    updateRoom(roomInput:{_id: "5e11bc304b7521a3c2e83999", name: "Test Room Rename", description: "A new description", room_category_id: "5e103036c690923421ea4dd8"}) {
+        _id
+        name
+        description
+        room_category {
+            _id
+            name
+            price
+            establishment {
+                _id
+                name
+            }
+        }
+    }
+}
+
+# Delete Room
+mutation {
+    deleteRoom(roomInput:{_id: "5e117e76ef41438e2950be90"})
 }

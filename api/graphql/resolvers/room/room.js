@@ -23,6 +23,10 @@ module.exports = {
             throw new Error('Unauthenticated');
         }
 
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
+
         try {
             const roomCategoryObj = await RoomCategory.findOne({ _id: args.roomInput.room_category_id });
             if (!roomCategoryObj) {
@@ -48,21 +52,32 @@ module.exports = {
             throw new Error('Unauthenticated');
         }
 
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
+
         try {
+            const roomCategoryObj = await RoomCategory.findOne({ _id: args.roomInput.room_category_id });
+            if (!roomCategoryObj) {
+                throw new Error('Invalid Room Category');
+            }
+
             const result = await Room.findByIdAndUpdate(
                 args.roomInput._id,
                 { 
                     name: args.roomInput.name,
                     description: args.roomInput.description,
                     room_category: roomCategoryObj._id,
-                }
+                },
+                { new: true }, // return latest results
             );
 
             if (!result) {
-                throw new Error('Failed to update Room Category');
+                throw new Error('Failed to update Room');
             }
 
-            return true;
+            const updatedRoom = transformRoom(result);
+            return updatedRoom;
         }
         catch(err) {
             throw err;
@@ -73,11 +88,15 @@ module.exports = {
             throw new Error('Unauthenticated');
         }
 
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
+
         try {
             const result = await Room.findByIdAndDelete(args.roomInput._id);
 
             if (!result) {
-                throw new Error('Failed to delete Room Category');
+                throw new Error('Failed to delete Room');
             }
 
             return true;

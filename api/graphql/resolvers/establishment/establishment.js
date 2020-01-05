@@ -22,6 +22,10 @@ module.exports = {
             throw new Error('Unauthenticated');
         }
 
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
+
         try {
             const estObj = new Establishment({
                 name: args.establishmentInput.name,
@@ -38,6 +42,10 @@ module.exports = {
     updateEstablishment: async (args, req) => {
         if (!req.isAuth) {
             throw new Error('Unauthenticated');
+        }
+
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
         }
 
         try {
@@ -63,6 +71,10 @@ module.exports = {
     deleteEstablishment: async (args, req) => {
         if (!req.isAuth) {
             throw new Error('Unauthenticated');
+        }
+
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
         }
 
         try {

@@ -23,6 +23,10 @@ module.exports = {
             throw new Error('Unauthenticated');
         }
 
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
+
         try {
             const establishmentObj = await Establishment.findOne({ _id: args.roomCategoryInput.establishment_id });
             if (!establishmentObj) {
@@ -46,6 +50,10 @@ module.exports = {
     updateRoomCategory: async (args, req) => {
         if (!req.isAuth) {
             throw new Error('Unauthenticated');
+        }
+
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
         }
 
         try {
@@ -80,6 +88,10 @@ module.exports = {
     deleteRoomCategory: async (args, req) => {
         if (!req.isAuth) {
             throw new Error('Unauthenticated');
+        }
+
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
         }
 
         try {
