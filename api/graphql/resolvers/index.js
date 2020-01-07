@@ -5,6 +5,7 @@ const establishmentResolver = require('./establishment/establishment');
 const roomCategoryResolver = require('./roomcategory/roomcategory');
 const roomResolver = require('./room/room');
 const contactResolver = require('./contact/contact');
+const reservationResolver = require('./reservation/reservation');
 
 const rootResolver = {
     ...userAuthResolver,
@@ -13,6 +14,7 @@ const rootResolver = {
     ...roomCategoryResolver,
     ...roomResolver,
     ...contactResolver,
+    ...reservationResolver,
 }
 
 module.exports = rootResolver;

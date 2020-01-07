@@ -292,8 +292,7 @@ mutation {
     }
 }
 
-
-# Update Room
+# Update Contact
 mutation {
     updateContact(contactInput:{_id: "5e1450e9c76add4cc568f263", first_name: "Tom1", last_name: "Storms1", email: "tomstorms1@gmail.com"}) {
         _id
@@ -303,7 +302,7 @@ mutation {
     }
 }
 
-# Delete Room
+# Delete Contact
 mutation {
     deleteContact(contactInput:{_id: "5e1451ee2fbeb94d7c2d935f"})
 }
@@ -311,11 +310,65 @@ mutation {
 #======================================================================
 
 
-# Create Reservation
-mutation {
-    createReservation(reservationInput:{primary_contact_id: ""}) {
+# Get Reservations
+query {
+    reservations {
         _id
         booking_ref
-        primary_contact
+        primary_contact {
+            _id
+            first_name
+            last_name
+            email
+        }
     }
+}
+
+# Get Reservation using Booking Reference
+
+mutation {
+    getReservationByBookingRef(reservationInput:{booking_ref: "028272"}) {
+        _id
+        booking_ref
+        primary_contact {
+            _id
+            first_name
+            last_name
+            email
+        }
+    }
+}
+
+# Create Reservation
+mutation {
+    createReservation(reservationInput:{primary_contact_id: "5e1450e9c76add4cc568f263"}) {
+        _id
+        booking_ref
+        primary_contact {
+            _id
+            first_name
+            last_name
+            email
+        }
+    }
+}
+
+
+# Update Reservation
+mutation {
+    updateReservation(reservationInput:{_id: "5e145c8a08568a542503272d", primary_contact_id: "5e145ef1391a5c555d96d2c9"}) {
+        _id
+        booking_ref
+        primary_contact {
+            _id
+            first_name
+            last_name
+            email
+        }
+    }
+}
+
+# Delete Reservation
+mutation {
+    deleteReservation(reservationInput:{_id: "5e145c8a08568a542503272d"})
 }

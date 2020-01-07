@@ -7,9 +7,9 @@ const reservationSchema = new Schema({
         type: String,
         required: true,
     },
-    rooms: {
+    primary_contact: {
         type: Schema.Types.ObjectId,
-        ref: 'Rooms'
+        ref: 'Contacts'
     }
 });
 

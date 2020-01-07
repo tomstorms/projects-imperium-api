@@ -88,7 +88,7 @@ module.exports = buildSchema(`
     type Reservation {
         _id: ID!
         booking_ref: String!
-        primary_contact_id: String!
+        primary_contact: Contact!
     }
     input ReservationInput {
         primary_contact_id: String!
@@ -99,6 +99,9 @@ module.exports = buildSchema(`
     }
     input ReservationInputDelete {
         _id: ID!
+    }
+    input ReservationByBookingRefInput {
+        booking_ref: String!
     }
 
 
@@ -128,6 +131,7 @@ module.exports = buildSchema(`
         room_category: [RoomCategory!]!
         rooms: [Room!]!
         contacts: [Contact!]!
+        reservations: [Reservation!]!
         login(email: String!, password: String!): AuthData!
     }
 
@@ -149,6 +153,7 @@ module.exports = buildSchema(`
         deleteContact(contactInput: ContactInputDelete!): Boolean
 
         createReservation(reservationInput: ReservationInput!): Reservation
+        getReservationByBookingRef(reservationInput: ReservationByBookingRefInput!): Reservation
         updateReservation(reservationInput: ReservationInputUpdate!): Reservation
         deleteReservation(reservationInput: ReservationInputDelete!): Boolean
 

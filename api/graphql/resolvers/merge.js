@@ -3,6 +3,7 @@ const DataLoader = require('dataloader');
 const User = require('../../models/user');
 const Establishment = require('../../models/establishment');
 const RoomCategory = require('../../models/roomcategory');
+const Contact = require('../../models/contact');
 const { dateToString } = require('../../helpers/date');
 
 const userLoader = new DataLoader(userIds => {
@@ -88,6 +89,21 @@ const manyRoomCategoryOfEstablishment = async establishmentId => {
     }
 };
 
+
+const contactLoader = new DataLoader(contactIds => {
+    return Contact.find({_id: {$in: contactIds}});
+});
+
+const singleContact = async contactId => {
+    try {
+        const contact = await contactLoader.load(contactId.toString());
+        return contact;
+    }
+    catch(err) {
+        throw err;
+    }
+};
+
 // const transformEvent = event => {
 //     return {
 //         ...event._doc, 
@@ -137,15 +153,6 @@ const transformRoom = room => {
 }
 exports.transformRoom = transformRoom;
 
-const transformReservation = reservation => {
-    return { 
-        ...reservation._doc,
-        _id: reservation.id, 
-        reservation_category: singlereservationCategory.bind(this, reservation._doc.reservation_category),
-    };
-}
-exports.transformReservation = transformReservation;
-
 const transformUser = user => {
     return { 
         ...user._doc,
@@ -161,3 +168,12 @@ const transformContact = contact => {
     };
 }
 exports.transformContact = transformContact;
+
+const transformReservation = reservation => {
+    return { 
+        ...reservation._doc,
+        _id: reservation.id,
+        primary_contact: singleContact.bind(this, reservation._doc.primary_contact),
+    };
+}
+exports.transformReservation = transformReservation;

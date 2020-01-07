@@ -1,7 +1,6 @@
 const Reservation = require('../../../models/reservation');
-const RoomCategory = require('../../../models/roomcategory');
-const Room = require('../../../models/room');
-const { transformRoom } = require('../merge');
+const Contact = require('../../../models/contact');
+const { transformReservation } = require('../merge');
 
 String.random = function (length) {
 	let radom13chars = function () {
@@ -12,7 +11,6 @@ String.random = function (length) {
 		return string + func()
 	}, '').substring(0, length)
 }
-
 
 module.exports = {
     reservations: async (args, req) => {
@@ -26,8 +24,8 @@ module.exports = {
 
         try {
             const reservations = await Reservation.find();
-            return reservations.map(room => {
-                return transformRoom(room);
+            return reservations.map(reservation => {
+                return transformReservation(reservation);
             });
         }
         catch(err) {
@@ -46,23 +44,34 @@ module.exports = {
         try {
 
             // Loop until we have a unique Booking Reference
-            let bookingRef = String.random(6);
-            let reservationObj = await Reservation.findOne({ reservation_ref: bookingRef });
+            const bookingRefLength = 7;
+            let bookingRef = String.random(bookingRefLength);
+            let reservationObj = await Reservation.findOne({ booking_ref: bookingRef });
 
             while(reservationObj) { 
-                bookingRef = String.random(6);
-                reservationObj = await Reservation.findOne({ reservation_ref: bookingRef });
+                bookingRef = String.random(bookingRefLength);
+                reservationObj = await Reservation.findOne({ booking_ref: bookingRef });
             }
 
-            const room = new Reservation({
-                name: args.roomInput.name,
-                description: args.roomInput.description,
-                room_category: roomCategoryObj._id,
+            bookingRef = bookingRef.toUpperCase();
+
+            // Fetch Primary Contact
+
+            const primaryContactObj = await Contact.findOne({ _id: args.reservationInput.primary_contact_id });
+            if (!primaryContactObj) {
+                throw new Error('Invalid Primary Contact');
+            }
+
+            // Create Reservation
+
+            const reservation = new Reservation({
+                booking_ref: bookingRef,
+                primary_contact: primaryContactObj._id,
             });
 
-            const result = await room.save();
-            const createdRoom = transformRoom(result);
-            return createdRoom;
+            const result = await reservation.save();
+            const createdReservation = transformReservation(result);
+            return createdReservation;
 
         }
         catch(err) {
@@ -70,61 +79,82 @@ module.exports = {
         }
     },
     updateReservation: async (args, req) => {
-    //     if (!req.isAuth) {
-            throw new Error('UPDATE COMING');
-    //     }
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated');
+        }
 
-    //     if (!req.userRole === 'superadmin') {
-    //         throw new Error('Forbidden');
-    //     }
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
 
-    //     try {
-    //         const roomCategoryObj = await RoomCategory.findOne({ _id: args.roomInput.room_category_id });
-    //         if (!roomCategoryObj) {
-    //             throw new Error('Invalid Room Category');
-    //         }
+        try {
+            const primaryContactObj = await Contact.findOne({ _id: args.reservationInput.primary_contact_id });
+            if (!primaryContactObj) {
+                throw new Error('Invalid Primary Contact');
+            }
 
-    //         const result = await Room.findByIdAndUpdate(
-    //             args.roomInput._id,
-    //             { 
-    //                 name: args.roomInput.name,
-    //                 description: args.roomInput.description,
-    //                 room_category: roomCategoryObj._id,
-    //             },
-    //             { new: true }, // return latest results
-    //         );
+            const result = await Reservation.findByIdAndUpdate(
+                args.reservationInput._id,
+                { 
+                    primary_contact: primaryContactObj._id,
+                },
+                { new: true }, // return latest results
+            );
 
-    //         if (!result) {
-    //             throw new Error('Failed to update Room');
-    //         }
+            if (!result) {
+                throw new Error('Failed to update Reservation');
+            }
 
-    //         const updatedRoom = transformRoom(result);
-    //         return updatedRoom;
-    //     }
-    //     catch(err) {
-    //         throw err;
-    //     }
+            const updatedReservation = transformReservation(result);
+            return updatedReservation;
+        }
+        catch(err) {
+            throw err;
+        }
     },
     deleteReservation: async (args, req) => {
-    //     if (!req.isAuth) {
-            throw new Error('DELETE COMING');
-    //     }
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated');
+        }
 
-    //     if (!req.userRole === 'superadmin') {
-    //         throw new Error('Forbidden');
-    //     }
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
 
-    //     try {
-    //         const result = await Room.findByIdAndDelete(args.roomInput._id);
+        try {
+            const result = await Reservation.findByIdAndDelete(args.reservationInput._id);
 
-    //         if (!result) {
-    //             throw new Error('Failed to delete Room');
-    //         }
+            if (!result) {
+                throw new Error('Failed to delete Reservation');
+            }
 
-    //         return true;
-    //     }
-    //     catch(err) {
-    //         throw err;
-    //     }
-    }
+            return true;
+        }
+        catch(err) {
+            throw err;
+        }
+    },
+    getReservationByBookingRef: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated');
+        }
+
+        if (!req.userRole === 'superadmin') {
+            throw new Error('Forbidden');
+        }
+
+        try {
+            const result = await Reservation.findOne({ booking_ref: args.reservationInput.booking_ref });
+            
+            if (!result) {
+                throw new Error('Failed to find Reservation with Booking Reference');
+            }
+
+            const getReservation = transformReservation(result);
+            return getReservation;
+        }
+        catch(err) {
+            throw err;
+        }
+    },
 }
