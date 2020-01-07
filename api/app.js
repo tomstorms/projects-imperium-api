@@ -9,6 +9,8 @@ const isAuth = require('./middleware/is-auth');
 
 const app = express();
 
+require('dotenv').config();
+
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
