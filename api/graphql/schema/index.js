@@ -63,6 +63,44 @@ module.exports = buildSchema(`
         _id: ID!
     }
 
+    type Contact {
+        _id: ID!
+        first_name: String!
+        last_name: String
+        email: String!
+    }
+    input ContactInput {
+        first_name: String!
+        last_name: String
+        email: String!
+    }
+    input ContactInputUpdate {
+        _id: ID!
+        first_name: String!
+        last_name: String
+        email: String!
+    }
+    input ContactInputDelete {
+        _id: ID!
+    }
+
+
+    type Reservation {
+        _id: ID!
+        booking_ref: String!
+        primary_contact_id: String!
+    }
+    input ReservationInput {
+        primary_contact_id: String!
+    }
+    input ReservationInputUpdate {
+        _id: ID!
+        primary_contact_id: String
+    }
+    input ReservationInputDelete {
+        _id: ID!
+    }
+
 
     type User {
         _id: ID!
@@ -76,7 +114,6 @@ module.exports = buildSchema(`
         password: String!
         user_role: String! = "authenticated"
     }
-
     type AuthData {
         userId: ID!
         token: String!
@@ -85,10 +122,12 @@ module.exports = buildSchema(`
         userProfile: String
     }
 
+
     type RootQuery {
         establishments: [Establishment!]!
         room_category: [RoomCategory!]!
         rooms: [Room!]!
+        contacts: [Contact!]!
         login(email: String!, password: String!): AuthData!
     }
 
@@ -104,6 +143,14 @@ module.exports = buildSchema(`
         createRoom(roomInput: RoomInput!): Room
         updateRoom(roomInput: RoomInputUpdate!): Room
         deleteRoom(roomInput: RoomInputDelete!): Boolean
+
+        createContact(contactInput: ContactInput!): Contact
+        updateContact(contactInput: ContactInputUpdate!): Contact
+        deleteContact(contactInput: ContactInputDelete!): Boolean
+
+        createReservation(reservationInput: ReservationInput!): Reservation
+        updateReservation(reservationInput: ReservationInputUpdate!): Reservation
+        deleteReservation(reservationInput: ReservationInputDelete!): Boolean
 
         createUser(userInput: UserInput!): User
     }

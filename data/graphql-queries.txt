@@ -267,3 +267,55 @@ mutation {
 mutation {
     deleteRoom(roomInput:{_id: "5e117e76ef41438e2950be90"})
 }
+
+
+#======================================================================
+
+
+# Get Contacts
+query {
+    contacts {
+        _id
+        first_name
+        last_name
+        email
+    }
+}
+
+# Create Contact
+mutation {
+    createContact(contactInput:{first_name: "Tom", last_name: "Storms", email: "tomstorms@gmail.com"}) {
+        _id
+        first_name
+        last_name
+        email
+    }
+}
+
+
+# Update Room
+mutation {
+    updateContact(contactInput:{_id: "5e1450e9c76add4cc568f263", first_name: "Tom1", last_name: "Storms1", email: "tomstorms1@gmail.com"}) {
+        _id
+        first_name
+        last_name
+        email
+    }
+}
+
+# Delete Room
+mutation {
+    deleteContact(contactInput:{_id: "5e1451ee2fbeb94d7c2d935f"})
+}
+
+#======================================================================
+
+
+# Create Reservation
+mutation {
+    createReservation(reservationInput:{primary_contact_id: ""}) {
+        _id
+        booking_ref
+        primary_contact
+    }
+}

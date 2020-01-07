@@ -7,6 +7,10 @@ module.exports = {
             throw new Error('Unauthenticated');
         }
 
+        if (!(req.userRole === 'authenticated' || req.userRole === 'superadmin')) {
+            throw new Error('Forbidden');
+        }
+
         try {
             const establishments = await Establishment.find();
             return establishments.map(establishment => {

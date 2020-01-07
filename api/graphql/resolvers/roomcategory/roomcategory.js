@@ -8,6 +8,10 @@ module.exports = {
             throw new Error('Unauthenticated');
         }
 
+        if (!(req.userRole === 'authenticated' || req.userRole === 'superadmin')) {
+            throw new Error('Forbidden');
+        }
+
         try {
             const roomCategories = await RoomCategory.find();
             return roomCategories.map(roomCategory => {

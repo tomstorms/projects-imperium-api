@@ -137,6 +137,15 @@ const transformRoom = room => {
 }
 exports.transformRoom = transformRoom;
 
+const transformReservation = reservation => {
+    return { 
+        ...reservation._doc,
+        _id: reservation.id, 
+        reservation_category: singlereservationCategory.bind(this, reservation._doc.reservation_category),
+    };
+}
+exports.transformReservation = transformReservation;
+
 const transformUser = user => {
     return { 
         ...user._doc,
@@ -144,3 +153,11 @@ const transformUser = user => {
     };
 }
 exports.transformUser = transformUser;
+
+const transformContact = contact => {
+    return { 
+        ...contact._doc,
+        _id: contact.id,
+    };
+}
+exports.transformContact = transformContact;
