@@ -90,10 +90,6 @@ const manyRoomCategoryOfEstablishment = async establishmentId => {
 };
 
 
-const contactLoader = new DataLoader(contactIds => {
-    return Contact.find({_id: {$in: contactIds}});
-});
-
 const singleContact = async contactId => {
     try {
         const contact = await contactLoader.load(contactId.toString());
@@ -103,6 +99,27 @@ const singleContact = async contactId => {
         throw err;
     }
 };
+
+const contactLoader = new DataLoader(contactIds => {
+    return contact(contactIds);
+});
+
+const contact = async contactIds => {
+    try {
+        const contacts = await Contact.find({_id: {$in: contactIds}});
+        contacts.sort((a,b) => {
+            return (
+                contactIds.indexOf(a._id.toString()) - contactIds.indexOf(b._id.toString())
+            );
+        });
+        return contacts.map(contactItem => {
+            return transformContact(contactItem);
+        });
+    }
+    catch(err) {
+        throw err;
+    }
+}
 
 // const transformEvent = event => {
 //     return {
