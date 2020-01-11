@@ -6,7 +6,7 @@ const User = require('../../../models/user');
 module.exports = {
     login: async ({email, password}) => {
         try {
-            const defaultTokenExpiry = 12; // hours
+            const defaultTokenExpiry = 15 * 60; // seconds
 
             const user = await User.findOne({email: email});
             if (!user) {
@@ -18,13 +18,21 @@ module.exports = {
                 throw new Error('Password is incorrect');
             }
 
-            const token = jwt.sign({ userId: user.id, userRole: user.user_role, email: user.email }, process.env.JWT_KEY, {
-                expiresIn: defaultTokenExpiry+'h'
-            });
+            const tokenExpiry = Math.floor(Date.now() / 1000) + defaultTokenExpiry;
+
+            const token = jwt.sign(
+                {
+                    exp: tokenExpiry,
+                    userId: user.id,
+                    userRole: user.user_role,
+                    email: user.email 
+                },
+                process.env.JWT_KEY
+            );
 
             return { 
                 token: token, 
-                tokenExpiration: defaultTokenExpiry, 
+                tokenExpiration: tokenExpiry, 
                 userId: user.id, 
                 userRole: user.user_role, 
                 userProfile: user.user_profile,
